@@ -110,7 +110,7 @@ router.post('/login', passport.authenticate('local'), (req, res) => {
   res.json({success: true, token: token, status: 'You are successfully logged in!'});
 });
 
-router.get('/logout', (req, res) => {
+router.get('/logout', (req, res,next) => {
   if (req.session) {
     req.session.destroy();
     res.clearCookie('session-id');
@@ -122,4 +122,16 @@ router.get('/logout', (req, res) => {
     next(err);
   }
 });
+
+router.get('/',authenticate.verifyUser,authenticate.verifyAdmin,(req,res,next)=> {
+  if(req.user.admin) {
+    User.find({})
+    .then(users => {
+      res.statusCode = 200;
+      res.setHeader('Content-Type','application/json')
+      res.json(users)
+    },(err)=> next(err))
+    .catch(err=> next(err))
+  }
+})
 module.exports = router;
