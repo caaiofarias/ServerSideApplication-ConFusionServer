@@ -374,7 +374,7 @@ express@~4.16.1:
     statuses "~1.4.0"
     type-is "~1.6.16"
     utils-merge "1.0.1"
-    vary "~1.1.2"
+    consty "~1.1.2"
 
 finalhandler@1.1.1:
   version "1.1.1"
@@ -1167,9 +1167,9 @@ utils-merge@1.0.1:
   resolved "https://registry.yarnpkg.com/utils-merge/-/utils-merge-1.0.1.tgz#9f95710f50a267947b2ccc124741c1028427e713"
   integrity sha1-n5VxD1CiZ5R7LMwSR0HBAoQn5xM=
 
-vary@~1.1.2:
+consty@~1.1.2:
   version "1.1.2"
-  resolved "https://registry.yarnpkg.com/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
+  resolved "https://registry.yarnpkg.com/consty/-/consty-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
   integrity sha1-IpnwLG3tMNSllhsLn3RSShj2NPw=
 
 void-elements@~2.0.1:
