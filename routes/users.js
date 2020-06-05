@@ -1,16 +1,16 @@
-var express = require('express');
-var router = express.Router();
+const express = require('express');
+const router = express.Router();
 const bodyParser = require('body-parser');
-var User = require('../models/user');
-var passport = require('passport');
+const User = require('../models/user');
+const passport = require('passport');
 router.use(bodyParser.json());
-var authenticate = require('../authenticate');
+const authenticate = require('../authenticate');
 
 // router.post('/signup', (req, res, next) => {
 //   User.findOne({username: req.body.username})
 //   .then((user) => {
 //     if(user != null) {
-//       var err = new Error('User ' + req.body.username + ' already exists!');
+//       const err = new Error('User ' + req.body.username + ' already exists!');
 //       err.status = 403;
 //       next(err);
 //     }
@@ -31,28 +31,28 @@ var authenticate = require('../authenticate');
 // router.post('/login', (req, res, next) => {
 
 //   if(!req.session.user) {
-//     var authHeader = req.headers.authorization;
+//     const authHeader = req.headers.authorization;
     
 //     if (!authHeader) {
-//       var err = new Error('You are not authenticated!');
+//       const err = new Error('You are not authenticated!');
 //       res.setHeader('WWW-Authenticate', 'Basic');
 //       err.status = 401;
 //       return next(err);
 //     }
   
-//     var auth = new Buffer.from(authHeader.split(' ')[1], 'base64').toString().split(':');
-//     var username = auth[0];
-//     var password = auth[1];
+//     const auth = new Buffer.from(authHeader.split(' ')[1], 'base64').toString().split(':');
+//     const username = auth[0];
+//     const password = auth[1];
   
 //     User.findOne({username: username})
 //     .then((user) => {
 //       if (user === null) {
-//         var err = new Error('User ' + username + ' does not exist!');
+//         const err = new Error('User ' + username + ' does not exist!');
 //         err.status = 403;
 //         return next(err);
 //       }
 //       else if (user.password !== password) {
-//         var err = new Error('Your password is incorrect!');
+//         const err = new Error('Your password is incorrect!');
 //         err.status = 403;
 //         return next(err);
 //       }
@@ -81,10 +81,22 @@ router.post('/signup', (req, res, next) => {
       res.json({err: err});
     }
     else {
-      passport.authenticate('local')(req, res, () => {
-        res.statusCode = 200;
-        res.setHeader('Content-Type', 'application/json');
-        res.json({success: true, status: 'Registration Successful!'});
+      if (req.body.firstname)
+        user.firstname = req.body.firstname;
+      if (req.body.lastname)
+        user.lastname = req.body.lastname;
+      user.save((err, user) => {
+        if (err) {
+          res.statusCode = 500;
+          res.setHeader('Content-Type', 'application/json');
+          res.json({err: err});
+          return ;
+        }
+        passport.authenticate('local')(req, res, () => {
+          res.statusCode = 200;
+          res.setHeader('Content-Type', 'application/json');
+          res.json({success: true, status: 'Registration Successful!'});
+        });
       });
     }
   });
@@ -92,7 +104,7 @@ router.post('/signup', (req, res, next) => {
 
 router.post('/login', passport.authenticate('local'), (req, res) => {
 
-  var token = authenticate.getToken({_id: req.user._id});
+  const token = authenticate.getToken({_id: req.user._id});
   res.statusCode = 200;
   res.setHeader('Content-Type', 'application/json');
   res.json({success: true, token: token, status: 'You are successfully logged in!'});
@@ -105,7 +117,7 @@ router.get('/logout', (req, res) => {
     res.redirect('/');
   }
   else {
-    var err = new Error('You are not logged in!');
+    const err = new Error('You are not logged in!');
     err.status = 403;
     next(err);
   }
