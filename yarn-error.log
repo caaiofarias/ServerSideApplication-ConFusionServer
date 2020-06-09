@@ -1,5 +1,5 @@
 Arguments: 
-  /usr/local/bin/node /usr/share/yarn/bin/yarn.js add cors
+  /usr/local/bin/node /usr/share/yarn/bin/yarn.js add passport-facebook-token
 
 PATH: 
   /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/caio/Android/Sdk/tools:/home/caio/Android/Sdk/platform-tools:/home/caio/Android/Sdk/tools:/home/caio/Android/Sdk/platform-tools:/home/caio/Android/Sdk/tools:/home/caio/Android/Sdk/platform-tools
@@ -36,6 +36,7 @@ npm manifest:
     },
     "dependencies": {
       "cookie-parser": "^1.4.3",
+      "cors": "^2.8.5",
       "debug": "~2.6.9",
       "express": "~4.16.1",
       "express-session": "^1.15.6",

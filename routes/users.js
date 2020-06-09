@@ -135,4 +135,14 @@ router.get('/',cors.corsWithOptions, authenticate.verifyUser,authenticate.verify
     .catch(err=> next(err))
   }
 })
+
+//se passport tiver criado o usuario(o req.user n estiver vazio, ele gera um jwt e manda pro usuario)
+router.get('/facebook/token',passport.authenticate('facebook-token'),(req,res)=> {
+  if(req.user) {
+    let token = authenticate.getToken({_id:req.user._id});
+    res.statusCode = 200;
+    res.setHeader('Content-Type', 'application/json');
+    res.json({success: true, token: token, status: 'You are successfully logged in!'});
+  }
+})
 module.exports = router;
