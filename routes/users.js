@@ -3,6 +3,7 @@ const router = express.Router();
 const bodyParser = require('body-parser');
 const User = require('../models/user');
 const passport = require('passport');
+const cors = require('./cors');
 router.use(bodyParser.json());
 const authenticate = require('../authenticate');
 
@@ -72,7 +73,7 @@ const authenticate = require('../authenticate');
 //   }
 // })
 
-router.post('/signup', (req, res, next) => {
+router.post('/signup',cors.corsWithOptions, (req, res, next) => {
   User.register(new User({username: req.body.username}), 
     req.body.password, (err, user) => {
     if(err) {
@@ -102,7 +103,7 @@ router.post('/signup', (req, res, next) => {
   });
 });
 
-router.post('/login', passport.authenticate('local'), (req, res) => {
+router.post('/login',cors.corsWithOptions, passport.authenticate('local'), (req, res) => {
 
   const token = authenticate.getToken({_id: req.user._id});
   res.statusCode = 200;
@@ -110,7 +111,7 @@ router.post('/login', passport.authenticate('local'), (req, res) => {
   res.json({success: true, token: token, status: 'You are successfully logged in!'});
 });
 
-router.get('/logout', (req, res,next) => {
+router.get('/logout',cors.corsWithOptions, (req, res,next) => {
   if (req.session) {
     req.session.destroy();
     res.clearCookie('session-id');
@@ -123,7 +124,7 @@ router.get('/logout', (req, res,next) => {
   }
 });
 
-router.get('/',authenticate.verifyUser,authenticate.verifyAdmin,(req,res,next)=> {
+router.get('/',cors.corsWithOptions, authenticate.verifyUser,authenticate.verifyAdmin,(req,res,next)=> {
   if(req.user.admin) {
     User.find({})
     .then(users => {
